@@ -1,0 +1,13 @@
+{
+	"autodeskProduct":	"Fusion360",
+	"type":	"addin",
+	"id":	"48cfbf58-ecc4-4e69-a01d-0650bd551f3a",
+	"author":	"Jody Bam",
+	"description":	{
+		"":	"Attempts to convert the model into a URDF file for ROS2."
+	},
+	"version":	"",
+	"runOnStartup":	false,
+	"supportedOS":	"windows",
+	"editEnabled":	true
+}

@@ -43,7 +43,7 @@ def run(context):
         package_name = robot_name + '_description'
         save_dir = utils.file_dialog(ui)
         if save_dir == False:
-            ui.messageBox('Fusion2URDF was canceled', title)
+            ui.messageBox('Conversion was canceled', title)
             return 0
         
         save_dir = save_dir + '/' + package_name
@@ -98,3 +98,6 @@ def run(context):
     except:
         if ui:
             ui.messageBox('Failed:\n{}'.format(traceback.format_exc()))
+
+def stop(context):
+    pass
