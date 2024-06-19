@@ -5,6 +5,7 @@ Created on Sun May 12 19:15:34 2019
 @author: syuntoku
 """
 
+from typing import Optional
 import adsk, adsk.core, adsk.fusion
 import os.path, re
 from xml.etree import ElementTree
@@ -13,7 +14,7 @@ from distutils.dir_util import copy_tree
 import fileinput
 import sys
 
-def copy_occs(root):    
+def copy_occs(root):
     """    
     duplicate all the components
     """    
@@ -51,7 +52,7 @@ def copy_occs(root):
         occs.component.name = 'old_component'
 
 
-def export_stl(design, save_dir, components):  
+def export_stl(design, save_dir, components):
     """
     export stl files into "sace_dir/"
     
@@ -68,7 +69,9 @@ def export_stl(design, save_dir, components):
     exportMgr = design.exportManager
     # get the script location
     try: os.mkdir(save_dir + '/meshes')
-    except: pass
+    except:
+        pass
+
     scriptDir = save_dir + '/meshes'  
     # export the occurrence one by one in the component to a specified file
     for component in components:
@@ -89,19 +92,19 @@ def export_stl(design, save_dir, components):
                     print('Component ' + occ.component.name + 'has something wrong.')
                 
 
-def file_dialog(ui):     
+def file_dialog(ui: adsk.core.UserInterface) -> Optional[str]:
     """
     display the dialog to save the file
     """
     # Set styles of folder dialog.
     folderDlg = ui.createFolderDialog()
-    folderDlg.title = 'Fusion Folder Dialog' 
+    folderDlg.title = 'Select a folder to save the URDF files.' 
     
     # Show folder dialog
     dlgResult = folderDlg.showDialog()
     if dlgResult == adsk.core.DialogResults.DialogOK:
         return folderDlg.folder
-    return False
+    return None
 
 
 def origin2center_of_mass(inertia, center_of_mass, mass):
@@ -127,7 +130,7 @@ def origin2center_of_mass(inertia, center_of_mass, mass):
                          -x*y, -y*z, -x*z]
     return [ round(i - mass*t, 6) for i, t in zip(inertia, translation_matrix)]
 
-
+# TODO: Move to an XML utility module.
 def prettify(elem):
     """
     Return a pretty-printed XML string for the Element.
@@ -144,6 +147,7 @@ def prettify(elem):
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
+# TODO: Move to a URDF utility module.
 def copy_package(save_dir, package_dir):
     try: os.mkdir(save_dir + '/launch')
     except: pass 
@@ -151,6 +155,7 @@ def copy_package(save_dir, package_dir):
     except: pass 
     copy_tree(package_dir, save_dir)
 
+# TODO: Move to a URDF utility module.
 def update_cmakelists(save_dir, package_name):
     file_name = save_dir + '/CMakeLists.txt'
 
